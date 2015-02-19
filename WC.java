@@ -1,7 +1,23 @@
+import java.io.*;
 public class WC{
 	String text;
 	public WC(String text){
 		this.text =text;
+	}
+	public WC(FileInputStream fis){
+		this.text = readFile(fis);
+	}
+	private static String readFile(FileInputStream fis){
+		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+		String text ="",line;
+		try{
+			while((line=reader.readLine())!=null){
+				text +=line;
+			}
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return text;
 	}
 	public int getWordCount(){
 		return this.text.split("[ \n\r]").length;
@@ -19,7 +35,14 @@ public class WC{
 		return outPut;
 	}
 	public static void main(String agrs[]){
-		WC wcout = new WC(agrs[0]);
-		System.out.println(wcout.toString());
+		try{
+			FileInputStream fs = new FileInputStream(new File(agrs[0]));
+			WC wcout = new WC(fs);
+			System.out.println(wcout.toString());
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
 	}
 } 
